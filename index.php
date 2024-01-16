@@ -279,42 +279,73 @@
                 </tr>
             </thead>
             <tbody>
-                <?php
-                if (!empty($sillas)) {
-                    foreach ($sillas as $fila) {
-                        $fila_id_mesa = $fila["id_mesa"];
-                        $fila_tipo_sala = $fila["tipo_sala"];
-                        $fila_nombre_sala = $fila["nombre_sala"];
-                        $fila_nombre_mesa = $fila["nombre_mesa"];
-                        $fila_sillas_mesa = $fila["sillas_mesa"];
-                        $fila_estado_mesa = $fila["estado_mesa"];
+<?php
+// Obtener la hora actual
+$horaActual = date('Y-m-d H:i:s');
 
-                        echo "
-                        <tr class='" . ($fila_id_mesa % 2 == 0 ? 'fila-par' : 'fila-impar') . "'>
-                            <td>" . $fila_id_mesa . "</td>   
-                            <td>" . $fila_tipo_sala . "</td>
-                            <td>" . $fila_nombre_sala . "</td>
-                            <td>" . $fila_nombre_mesa . "</td>
-                            <td>" . $fila_sillas_mesa . "</td>
-                            <td><button onclick='editarSillas(" . $fila_id_mesa . ", " . $fila_sillas_mesa . ")'>Editar</button></td>
-                        ";
-                        if ($fila_estado_mesa == "Libre") {
-                            echo "<td id='mesa_libre'><a href='#' onclick='confirmarAccion(\"Reservar\", " . $fila_id_mesa . ")'>Ocupar</a></td>";
-                        } else if ($fila_estado_mesa == "Ocupada") {
-                            echo "<td id='mesa_ocupada'><a href='#' onclick='confirmarAccion(\"Finalizar ocupacion\", " . $fila_id_mesa . ")'>Finalizar ocupacion </a></td>";
-                        } else if ($fila_estado_mesa == "Reservada") {
-                            echo "<td id='mesa_Reservada'><a href='#' onclick='confirmarAccion(\"Mesa Reservada\", " . $fila_id_mesa . ")'>Mesa Reservada</a></td>";
-                        }
-                        
-                        
-                        echo"</tr>";
-                        }
-                        } else {
-                            echo "<tr>
-                            <td>No hay mesas disponibles</td>
-                            </tr>";
-                        }
-                        ?>
+// ...
+
+if (!empty($sillas)) {
+    foreach ($sillas as $fila) {
+        $fila_id_mesa = $fila["id_mesa"];
+        $fila_tipo_sala = $fila["tipo_sala"];
+        $fila_nombre_sala = $fila["nombre_sala"];
+        $fila_nombre_mesa = $fila["nombre_mesa"];
+        $fila_sillas_mesa = $fila["sillas_mesa"];
+        $fila_estado_mesa = $fila["estado_mesa"];
+
+        // Consulta para obtener la información de la reserva de la mesa actual
+        $consultaReserva = "SELECT * FROM tbl_reservas WHERE id_mesa_reserva = ?";
+        $stmtReserva = $conn->prepare($consultaReserva);
+        $stmtReserva->bind_param('i', $fila_id_mesa);
+        $stmtReserva->execute();
+        $resultReserva = $stmtReserva->get_result();
+        $reserva = $resultReserva->fetch_assoc();
+
+        // Verificar el estado de la mesa
+        if ($reserva) {
+            // Si hay una reserva, verificar si la hora actual está entre la hora de inicio y final
+            $horaInicioReserva = $reserva['hora_inicio_reserva'];
+            $horaFinalReserva = $reserva['hora_final_reserva'];
+
+            if ($horaActual >= $horaInicioReserva && $horaActual <= $horaFinalReserva) {
+                $estadoMesa = 'Reservada';
+            } else {
+                // Si solo tiene hora de inicio, la mesa está ocupada
+                $estadoMesa = 'Ocupada';
+            }
+        } else {
+            // Si no hay reserva, la mesa está libre
+            $estadoMesa = 'Libre';
+        }
+
+        echo "
+        <tr class='" . ($fila_id_mesa % 2 == 0 ? 'fila-par' : 'fila-impar') . "'>
+            <td>" . $fila_id_mesa . "</td>   
+            <td>" . $fila_tipo_sala . "</td>
+            <td>" . $fila_nombre_sala . "</td>
+            <td>" . $fila_nombre_mesa . "</td>
+            <td>" . $fila_sillas_mesa . "</td>
+            <td><button onclick='editarSillas(" . $fila_id_mesa . ", " . $fila_sillas_mesa . ")'>Editar</button></td>";
+
+        // Mostrar el estado de la mesa
+        if ($estadoMesa == "Libre") {
+            echo "<td id='mesa_libre'><a href='#' onclick='confirmarAccion(\"Reservar\", " . $fila_id_mesa . ")'>Ocupar</a></td>";
+        } else if ($estadoMesa == "Ocupada") {
+            echo "<td id='mesa_ocupada'><a href='#' onclick='confirmarAccion(\"Finalizar ocupacion\", " . $fila_id_mesa . ")'>Finalizar ocupacion </a></td>";
+        } else if ($estadoMesa == "Reservada") {
+            echo "<td id='mesa_Reservada'><a href='#' onclick='confirmarAccion(\"Mesa Reservada\", " . $fila_id_mesa . ")'>Mesa Reservada</a></td>";
+        }
+
+        echo "</tr>";
+    }
+} else {
+    echo "<tr>
+    <td>No hay mesas disponibles</td>
+    </tr>";
+}
+?>
+
 <script>
     function editarSillas(mesaId, sillasActuales) {
         var nuevaCantidad = prompt("Editar cantidad de sillas", sillasActuales);
