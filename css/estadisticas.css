@@ -1,0 +1,49 @@
+body {
+    font-family: 'Arial', sans-serif;
+    background-image: url('../img/estadisticas.gif'); /* Imagen de fondo */
+    background-size: cover; /* Ajustar imagen al tamaño de la ventana */
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh; /* 100% del alto de la ventana */
+}
+
+.translucent-box {
+    background-color: rgba(255, 255, 255, 0.95); /* Fondo blanco translúcido */
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Sombra ligera */
+    text-align: center;
+}
+
+h1 {
+    font-size: 60px;
+}
+h1, h2 {
+    color: #4D382D; /* Marrón oscuro */
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+li {
+    margin-bottom: 20px; /* Aumenté la separación */
+}
+
+button {
+    padding: 10px;
+    background-color: #4D382D;
+    color: #FFF; /* Texto blanco */
+    border: none;
+    cursor: pointer;
+    margin-top: 30px; /* Aumenté la separación */
+    transition: background-color 2.0s; /* Agregué transición para el hover */
+}
+
+button:hover {
+    background-color: #634B3C; /* Color diferente al hacer hover */
+    border-radius: 10px;
+}

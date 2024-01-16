@@ -1,0 +1,99 @@
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f5f5f5; /* Color de fondo principal */
+    margin: 0;
+    padding: 0;
+}
+
+h1 {
+    text-align: center;
+    color: #4e3629; /* Marrón oscuro para el título */
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+    margin-bottom: 20px;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+form[name="formulario-filtros"], .div-table {
+    padding-left: 50px;
+    padding-right: 50px;
+    
+}   
+
+th, td {
+    border: 1px solid #dcdcdc; /* Marrón claro para los bordes */
+    text-align: left;
+    padding: 12px; /* Aumenta el espacio interno para mejorar la legibilidad */
+}
+
+th {
+    background-color: #ffe799; /* Marrón más claro para el encabezado de la tabla */
+}
+
+/* Estilo solo para la imagen del botón de volver */
+.volver-button {
+    width: fit-content;
+    position: absolute;
+    width: 80px; /* Ajusta el ancho según tus necesidades */
+    height: 80px; /* Ajusta la altura según tus necesidades */
+    border-radius: 10%; /* Hace que la imagen sea redonda */
+    padding-left: 5%;
+    padding-top: 1%;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.3s ease; /* Agrega una transición para suavizar el efecto de hover */
+}
+
+.volver-button:hover {
+    transform: scale(1.1); /* Aumenta ligeramente el tamaño al pasar el ratón sobre la imagen */
+}
+
+form {
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    flex-wrap: wrap;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    color: #4e3629; /* Marrón oscuro para las etiquetas */
+}
+
+input[type="date"],
+input[type="time"],
+select,
+input[type="submit"],
+input[type="button"] {
+    padding: 2px;
+    margin-bottom: 2px;
+    flex: 1;
+    margin-right: 10px;
+    border: 1px solid #dcdcdc; /* Marrón claro para los bordes */
+}
+
+
+input[type="submit"],
+input[type="button"] {
+    background-color: #ffe799;; /* Marrón más oscuro para los botones */
+    color: #000000;
+    border-color: #000000;
+    padding: 5px 10px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+input[type="submit"]:hover,
+input[type="button"]:hover {
+    background-color:  rgb(255, 241, 210);
+}

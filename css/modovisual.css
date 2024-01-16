@@ -1,0 +1,92 @@
+body {
+    font-family: Arial, sans-serif;
+    background: url('../img/modovisual.gif') fixed; /* Cambiar 'modovisual.gif' con la ruta correcta de tu imagen */
+    background-size: cover;
+}
+
+.container {
+    border-radius: 20px;
+    background-color: rgba(255, 255, 255, 0.8); /* Color crema con opacidad */
+    max-width: 800px; /* Ajusta el ancho máximo según tus necesidades */
+    margin: 0 auto; /* Centra el contenedor en la página */
+    padding: 20px; /* Añade espacio alrededor del contenido */
+}
+
+.mesa-group {
+    text-align: center; /* Añade esta línea para centrar las imágenes */
+}
+
+
+
+h1 {
+    font-size: 50px;
+    text-align: center;
+    color:#4D382D; /* Color crema para el texto */
+}
+h2{
+    text-align: center;
+    color:#4D382D;
+}
+
+.volver-button {
+    width: fit-content;
+    position: absolute;
+    width: 80px; /* Ajusta el ancho según tus necesidades */
+    height: 80px; /* Ajusta la altura según tus necesidades */
+    border-radius: 50%; /* Hace que la imagen sea redonda */
+    border: none;
+    cursor: pointer;
+    transition: transform 0.3s ease; /* Agrega una transición para suavizar el efecto de hover */
+}
+
+.volver-button:hover {
+    transform: scale(1.1); /* Aumenta ligeramente el tamaño al pasar el ratón sobre el botón */
+}
+
+
+a {
+    display: inline-block;
+    margin: 10px;
+    text-decoration: none;
+}
+
+img {
+    position: center;
+    width: 150px; /* Ajusta el tamaño según tus necesidades */
+    height: 150px; /* Ajusta el tamaño según tus necesidades */
+    border: 2px solid #333; /* Añade un borde a las imágenes */
+    border-radius: 5px; /* Añade esquinas redondeadas */
+}
+
+img.libre {
+    background-color: lightgreen; /* Fondo verde para mesas libres */
+}
+
+img.ocupada {
+    background-color: indianred; /* Fondo rojo para mesas ocupadas */
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

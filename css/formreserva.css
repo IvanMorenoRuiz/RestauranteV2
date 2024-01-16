@@ -1,0 +1,61 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: url('../img/modovisual.gif') fixed;
+    background-size: cover;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
+.box {
+    border-radius: 20px;
+    background-color: rgba(255, 255, 255, 0.8);
+    max-width: 1000px; /* Ajusta el ancho máximo de la caja según tus necesidades */
+    padding: 40px; /* Ajusta el espacio interno de la caja según tus necesidades */
+    text-align: center;
+}
+
+h3 {
+    font-size: 48px; /* Ajusta el tamaño de la fuente según tus preferencias */
+    color: #4D382D;
+    text-transform: uppercase; /* Convierte el texto a mayúsculas */
+}
+
+h1 {
+    font-size: 30px; /* Ajusta el tamaño de la fuente según tus preferencias */
+    color: #4D382D;
+    text-transform: uppercase; /* Convierte el texto a mayúsculas */
+}
+
+
+form {
+    margin-top: 30px; /* Ajusta el margen superior según tus necesidades */
+}
+
+input {
+    margin-bottom: 15px; /* Ajusta el margen inferior según tus necesidades */
+    font-size: 24px; /* Ajusta el tamaño de la fuente según tus preferencias */
+}
+
+input[type="submit"] {
+    background-color: #4D382D;
+    color: #FFF;
+    padding: 15px 30px; /* Ajusta el espacio interno del botón según tus necesidades */
+    font-size: 20px; /* Ajusta el tamaño de la fuente del botón según tus preferencias */
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+input[type="submit"]:hover {
+    background-color: #593F35;
+    border-radius: 15px;
+}
+
+p {
+    font-size: 24px; /* Ajusta el tamaño de la fuente según tus preferencias */
+    color: #4D382D;
+}
+

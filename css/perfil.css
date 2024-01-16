@@ -1,0 +1,89 @@
+body {
+    margin: 0;
+    padding: 0;
+    background-image: url('../img/estadisticas.gif');
+    background-size: cover;
+    background-position: center;
+    font-family: Arial, sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh; /* Ajustar la altura al 100% de la ventana */
+}
+
+/* Box translúcida */
+.estadisticas-box {
+    background-color: rgba(255, 255, 255, 0.95); /* Fondo blanco translúcido */
+    width: 600px;
+    max-width: 800px;
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.95); /* Sombra para resaltar la caja */
+    text-align: center; /* Añadí la propiedad text-align para centrar el contenido */
+}
+
+/* Información del camarero */
+.perfil-camarero {
+    text-align: center;
+}
+
+.perfil-camarero img {
+    max-width: 100%; /* La imagen no se ensanchará más allá de su tamaño original */
+    height: auto; /* Mantener la proporción de la imagen */
+    border-radius: 50%; /* Hacer la imagen redonda */
+    overflow: hidden; /* Evitar que la imagen sobresalga del círculo */
+    object-fit: cover; /* Ajustar la imagen en un cuadro cuadrado sin distorsionarla */
+    width: 200px; /* Tamaño fijo para la imagen */
+    height: 200px; /* Tamaño fijo para la imagen */
+    margin-bottom: 20px;
+}
+
+.perfil-camarero h2,
+.perfil-camarero p {
+    color: #8B4513; /* Marrón fuerte */
+}
+
+.perfil-camarero h2 {
+    font-size: 30px;
+}
+
+/* Estadísticas del camarero */
+.estadisticas-camarero h3,
+.estadisticas-camarero li {
+    color: #8B4513; /* Marrón fuerte */
+}
+
+/* Estilizar la lista */
+.estadisticas-camarero ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+/* Estilizar los elementos de la lista */
+.estadisticas-camarero li {
+    margin-bottom: 10px;
+    color: #8B4513; /* Marrón fuerte */
+}
+
+/* Estilizar los elementos de la lista */
+.estadisticas-camarero li {
+    margin-bottom: 10px;
+    color: #8B4513; /* Marrón fuerte */
+}
+
+button {
+    padding: 10px;
+    background-color: #4D382D;
+    color: #FFF; /* Texto blanco */
+    border: none;
+    cursor: pointer;
+    margin-top: 30px; /* Aumenté la separación */
+    transition: background-color 2.0s; /* Agregué transición para el hover */
+    margin: 20px auto; /* Centrado horizontalmente */
+    display: block; /* Hacer que el botón sea un bloque para centrarlo horizontalmente */
+}
+
+button:hover {
+    background-color: #634B3C; /* Color diferente al hacer hover */
+    border-radius: 10px;
+}
