@@ -21,7 +21,7 @@ if (!isset($_SESSION['user'])) {
 <div class="container">
 
 <form >
-    <a href="index.php">
+    <a href="seleccionarsitio.php">
         <img src="./img/botonvolver.png" alt="Volver" class="volver-button">
     </a>
 </form>

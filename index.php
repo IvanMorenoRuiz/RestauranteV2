@@ -250,10 +250,7 @@
             <div class="filtro-salas filtro-medio">
                 <div class="filtro-visual">
                 <a
-                    <?php if ($_SESSION["tipo_sala"] == "%") {
-                        echo "style='pointer-events:none;'";
-                    } ?>
-                    href='modovisual.php?tipo_sala=<?php echo $_SESSION["tipo_sala"] ?>'>Ver Mesas</a>
+                    href='seleccionarsitio.php'>Ver Mesas</a>
                 </div>
             </div>
         </div>
