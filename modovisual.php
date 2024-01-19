@@ -1,11 +1,9 @@
 <?php
-// Inicia la sesión de PHP.
 session_start();
 
-// Verificar si el usuario está autenticado.
+// Verificar si el usuario está autenticado
 if (!isset($_SESSION['user'])) {
-    // Si no ha iniciado sesión, redirige a la página de inicio de sesión.
-    header('Location: login.php');
+    header('Location: login.php'); // Redirigir a la página de inicio si no ha iniciado sesión
     exit();
 }
 ?>
@@ -23,20 +21,18 @@ if (!isset($_SESSION['user'])) {
 <div class="container">
 
 <form >
-    <!-- Enlace para volver a la página de inicio -->
     <a href="index.php">
         <img src="./img/botonvolver.png" alt="Volver" class="volver-button">
     </a>
 </form>
 
 <?php
-// Incluye el archivo de conexión a la base de datos.
 include './proc/conexion.php';
 
-// Obtener el tipo de sala seleccionado desde la URL.
+// Obtener el tipo de sala seleccionado
 $tipoSalaSeleccionado = $_GET['tipo_sala'] ?? '';
 
-// Consulta para obtener las mesas de la sala seleccionada.
+// Consulta para obtener las mesas de la sala seleccionada
 $query = "SELECT m.id_mesa, m.nombre_mesa, m.estado_mesa, m.sillas_mesa, s.nombre_sala
           FROM tbl_mesas m
           INNER JOIN tbl_salas s ON m.id_sala_mesa = s.id_sala
@@ -57,45 +53,37 @@ if (mysqli_num_rows($result) > 0) {
         $sillasMesa = $row['sillas_mesa'];
         $nombreSala = $row['nombre_sala'];
 
-        // Mostrar el título de la sala solo cuando cambia.
+        // Mostrar el título de la sala solo cuando cambia
         if ($currentSalaId !== $nombreSala) {
             if ($currentSalaId !== null) {
-                echo "</div>"; // Cerrar el grupo anterior de imágenes.
+                echo "</div>"; // Cerrar el grupo anterior de imágenes
             }
             echo "<h2>$nombreSala</h2>";
-            echo "<div class='mesa-group'>"; // Iniciar un nuevo grupo de imágenes.
+            echo "<div class='mesa-group'>"; // Iniciar un nuevo grupo de imágenes
             $currentSalaId = $nombreSala;
         }
 
-        // Construir el nombre de la imagen según el número de sillas.
+        // Construir el nombre de la imagen según el número de sillas
         $imagenMesa = "./img/mesa$sillasMesa.png";
 
-        // Determinar la clase CSS según el estado de la mesa.
+        // Determinar la clase CSS según el estado de la mesa
         $claseEstado = ($estadoMesa == 'Libre') ? 'libre' : 'ocupada';
 
-        // La imagen de la mesa es un enlace al formulario de reserva.
+        // La imagen de la mesa es un enlace al formulario de reserva
         echo "<a href='formreserva.php?mesa_id=$mesaId&estado_mesa=$estadoMesa&tipo_sala=$tipoSalaSeleccionado'>";
         echo "<img class='$claseEstado' src='$imagenMesa' alt='Mesa $nombreMesa - $estadoMesa'>";
         echo "</a>";
     }
 
-    echo "</div>"; // Cerrar el último grupo de imágenes.
+    echo "</div>"; // Cerrar el último grupo de imágenes
 } else {
     echo "No hay mesas en la sala $tipoSalaSeleccionado.";
 }
 
-// Cerrar la conexión.
+// Cerrar la conexión
 mysqli_close($conn);
 ?>
 </div>
 
 </body>
 </html>
-
-
-
-
-
-
-
-

@@ -1,6 +1,7 @@
 <?php
 session_start();
 
+// Redirigir a la página de inicio de sesión si el usuario no está autenticado
 if (!isset($_SESSION["user"]) || !isset($_SESSION["username"])) {
     header("location: ./login.php");
 }
@@ -27,7 +28,7 @@ mysqli_close($conn);
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">

@@ -8,7 +8,7 @@ if (!isset($_POST['login'])) {
     $user = mysqli_real_escape_string($conn, $_POST['user']);
     $pwd = mysqli_real_escape_string($conn, $_POST['pwd']);
 
-    // Consulta SQL para seleccionar el nombre de usuario y la contraseña hash de la base de datos
+    // Consulta SQL para seleccionar el nombre de usuario, la contraseña hash y el tipo de usuario de la base de datos
     $sql = "SELECT id_camarero, username_camarero, pwd_camarero FROM tbl_camareros WHERE username_camarero = ?";
     
     $stmt = mysqli_stmt_init($conn);
@@ -23,7 +23,13 @@ if (!isset($_POST['login'])) {
         if (password_verify($pwd, $pwd2_encript)) {
             $_SESSION['user'] = $row['id_camarero'];
             $_SESSION['username'] = $row['username_camarero'];
-            header('Location: ../pagintermedia.php');
+
+            // Verificar si el nombre de usuario es "administrador" y redirigir a adminindex.php
+            if ($user === 'administrador') {
+                header('Location: ../adminindex.php');
+            } else {
+                header('Location: ../index.php');
+            }
         } else {
             header('Location: ../login.php?fallo=0');
         }

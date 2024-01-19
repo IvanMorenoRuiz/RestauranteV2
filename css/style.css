@@ -104,14 +104,6 @@ tr.fila-impar:has(>td#mesa_libre ) {
     background-color: rgb(152, 219, 152);
 }
 
-tr.fila-par:has(>td#mesa_Reservada ) {
-    background-color: rgb(219, 215, 152);
-}
-
-tr.fila-impar:has(>td#mesa_Reservada ) {
-    background-color: rgb(255, 251, 189);
-}
-
 tr.fila-par:has(>td#mesa_ocupada ) {
     background-color: rgb(192, 118, 118);
 }

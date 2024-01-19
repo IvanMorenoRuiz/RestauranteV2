@@ -1,15 +1,3 @@
-
-
-<?php 
-    session_start();
-
-    if (!isset($_SESSION["user"]) || !isset($_SESSION["username"])) {
-        header("location: ./login.php");
-    }
-    $user = $_SESSION['user'];
-    $username = $_SESSION['username'];
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -19,24 +7,51 @@
     <link rel="stylesheet" type="text/css" href="./css/style.css">
     <script src="js/script.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-    <script>
+</head>
+<body>
+    <?php // FILTRO
+
+    session_start();
+
+    if (!isset($_SESSION["user"])) {
+        header("location: ./login.php");
+    }
+    $username = $_SESSION['username'];
+
+    echo "<script>
     // Este script se ejecutará cuando se cargue la página
     window.onload = function() {
         // Verificar si ya se ha mostrado el mensaje de bienvenida
         if (!localStorage.getItem('alertBienvenido')) {
             // Mostrar mensaje de bienvenida utilizando SweetAlert
             Swal.fire({
-                title: 'Bienvenido <?php echo $username ?>',
+                title: 'Bienvenido $username',
                 icon: 'success',
               });
             // Marcar que se ha mostrado el mensaje de bienvenida
             localStorage.setItem('alertBienvenido', 'true');
             }
         };
-    </script>
-</head>
-<body>
-    <?php // FILTRO
+    </script>";
+
+
+
+    // Verificar si hay parámetros en la URL indicando una reserva exitosa
+    if (isset($_GET['reserva']) && $_GET['reserva'] === 'exito') {
+        $mesaReservada = $_GET['mesa'];
+        $fechaReserva = $_GET['fecha'];
+        $horaReserva = $_GET['hora'];
+    
+        // Mostrar el SweetAlert
+        echo '<script>';
+        echo 'Swal.fire("Mesa reservada", "La mesa ' . $mesaReservada . ' ha sido reservada para el ' . $fechaReserva . ' a las ' . $horaReserva . '", "success");';
+        echo '</script>';
+    }
+
+
+
+
+
 
     if (empty($_POST["tipo-sala"])) {
         $_SESSION["tipo_sala"] = "%";
@@ -65,22 +80,12 @@
     
     include_once("proc/conexion.php");
 
-
     $sql0 = 'SELECT * FROM tbl_mesas INNER JOIN tbl_salas ON id_sala_mesa = id_sala';
     $stmt0 = mysqli_prepare($conn, $sql0);
     mysqli_stmt_execute($stmt0);
     $resultado0 = mysqli_stmt_get_result($stmt0);
     while ($fila0 = mysqli_fetch_assoc($resultado0)) {
         $sillas0[] = $fila0;
-    }
-
-    $sql2 = 'SELECT * FROM tbl_mesas INNER JOIN tbl_salas ON id_sala_mesa = id_sala WHERE tipo_sala LIKE ?';
-    $stmt2 = mysqli_prepare($conn, $sql2);
-    mysqli_stmt_bind_param($stmt2, "s", $_SESSION["tipo_sala"]);
-    mysqli_stmt_execute($stmt2);
-    $resultado2 = mysqli_stmt_get_result($stmt2);
-    while ($fila2 = mysqli_fetch_assoc($resultado2)) {
-        $sillas2[] = $fila2;
     }
 
     $sql = 'SELECT * FROM tbl_mesas INNER JOIN tbl_salas ON id_sala_mesa = id_sala WHERE nombre_sala LIKE ? AND tipo_sala LIKE ? AND sillas_mesa LIKE ? AND estado_mesa LIKE ?;';
@@ -92,8 +97,6 @@
         $sillas[] = $fila;
     }
 
-    mysqli_stmt_close($stmt2);
-    mysqli_stmt_close($stmt0);
     mysqli_stmt_close($stmt);
 
     include("header.php");
@@ -105,7 +108,6 @@
             <?php
                 $tipo_salas_duplicadas = array();
                 if (!empty($sillas0)) {
-
                     foreach ($sillas0 as $fila) {
                         $fila_tipo_sala = $fila["tipo_sala"];
                         
@@ -126,12 +128,13 @@
 
                             $tipo_salas_duplicadas[$fila_tipo_sala] = true;
                         }
+                        
                     }
                 } else {
                     echo '
                     <div>
-                        <input style="pointer-events:none;" type="radio" id="tipo-sala" name="tipo-sala" value="tipo-sala" onclick="submitForm()">
-                        <label style="pointer-events:none;" for="tipo-sala">No hay salas disponibles</label>
+                        <input type="radio" id="tipo-sala" name="tipo-sala" value="tipo-sala" onclick="submitForm()">
+                        <label for="tipo-sala">No hay salas disponibles</label>
                     </div>
                     ';
                 }
@@ -142,9 +145,8 @@
             <?php
                 $salas_duplicadas = array();
                 
-                if (!empty($sillas2)) {
-
-                    foreach ($sillas2 as $fila) {
+                if (!empty($sillas0)) {
+                    foreach ($sillas0 as $fila) {
                         $fila_nombre_sala = $fila["nombre_sala"];
                         
                         if (!isset($salas_duplicadas[$fila_nombre_sala])) {
@@ -164,12 +166,13 @@
 
                             $salas_duplicadas[$fila_nombre_sala] = true;
                         }
+                        
                     }
                 } else {
                     echo '
                     <div>
-                        <input style="pointer-events:none;" type="radio" id="tipo-sala" name="tipo-sala" value="tipo-sala" onclick="submitForm()">
-                        <label style="pointer-events:none;" for="tipo-sala">No hay salas disponibles</label>
+                        <input type="radio" id="tipo-sala" name="tipo-sala" value="tipo-sala" onclick="submitForm()">
+                        <label for="tipo-sala">No hay salas disponibles</label>
                     </div>
                     ';
                 }
@@ -180,8 +183,8 @@
             <?php
                 $sillas_duplicadas = array();
                 
-                if (!empty($sillas2)) {
-                    foreach ($sillas2 as $fila) {
+                if (!empty($sillas0)) {
+                    foreach ($sillas0 as $fila) {
                         $fila_sillas_mesa = $fila["sillas_mesa"];
                         
                         if (!isset($sillas_duplicadas[$fila_sillas_mesa])) {
@@ -205,8 +208,8 @@
                 } else {
                     echo '
                     <div>
-                        <input style="pointer-events:none;" type="radio" id="tipo-sala" name="tipo-sala" value="tipo-sala" onclick="submitForm()">
-                        <label style="pointer-events:none;" for="tipo-sala">No hay salas disponibles</label>
+                        <input type="radio" id="tipo-sala" name="tipo-sala" value="tipo-sala" onclick="submitForm()">
+                        <label for="tipo-sala">No hay salas disponibles</label>
                     </div>
                     ';
                 }
@@ -253,15 +256,6 @@
                     href='modovisual.php?tipo_sala=<?php echo $_SESSION["tipo_sala"] ?>'>Ver Mesas</a>
                 </div>
             </div>
-            <div class="filtro-salas filtro-medio">
-                <div class="filtro-visual">
-                <a
-                    <?php if ($_SESSION["nombre_sala"] == "%") {
-                        echo "style='pointer-events:none;'";
-                    } ?>
-                    href='reservaentera.php?nombre_sala=<?php echo $_SESSION["nombre_sala"] ?>'>Reservar Sala Entera</a>
-                </div>
-            </div>
         </div>
     </form>
 
@@ -269,125 +263,108 @@
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th>ID Mesa</th>
                     <th>Tipo Sala</th>
                     <th>Nombre Sala</th>
                     <th>Mesa</th>
                     <th>Sillas</th>
-                    <th>Editar</th>
-                    <th>Estado</th>
+                    <th>Accion</th>
+                    <th>Accion</th>
                 </tr>
             </thead>
             <tbody>
-<?php
-// Obtener la hora actual
-$horaActual = date('Y-m-d H:i:s');
 
-// ...
+            <?php
+            if (!empty($sillas)) {
+                foreach ($sillas as $fila) {
+                    $fila_id_mesa = $fila["id_mesa"];
+                    $fila_tipo_sala = $fila["tipo_sala"];
+                    $fila_nombre_sala = $fila["nombre_sala"];
+                    $fila_nombre_mesa = $fila["nombre_mesa"];
+                    $fila_sillas_mesa = $fila["sillas_mesa"];
+                    $fila_estado_mesa = $fila["estado_mesa"];
 
-if (!empty($sillas)) {
-    foreach ($sillas as $fila) {
-        $fila_id_mesa = $fila["id_mesa"];
-        $fila_tipo_sala = $fila["tipo_sala"];
-        $fila_nombre_sala = $fila["nombre_sala"];
-        $fila_nombre_mesa = $fila["nombre_mesa"];
-        $fila_sillas_mesa = $fila["sillas_mesa"];
-        $fila_estado_mesa = $fila["estado_mesa"];
-
-        // Consulta para obtener la información de la reserva de la mesa actual
-        $consultaReserva = "SELECT * FROM tbl_reservas WHERE id_mesa_reserva = ?";
-        $stmtReserva = $conn->prepare($consultaReserva);
-        $stmtReserva->bind_param('i', $fila_id_mesa);
-        $stmtReserva->execute();
-        $resultReserva = $stmtReserva->get_result();
-        $reserva = $resultReserva->fetch_assoc();
-
-        // Verificar el estado de la mesa
-        if ($reserva) {
-            // Si hay una reserva, verificar si la hora actual está entre la hora de inicio y final
-            $horaInicioReserva = $reserva['hora_inicio_reserva'];
-            $horaFinalReserva = $reserva['hora_final_reserva'];
-
-            if ($horaActual >= $horaInicioReserva && $horaActual <= $horaFinalReserva) {
-                $estadoMesa = 'Reservada';
-            } else {
-                // Si solo tiene hora de inicio, la mesa está ocupada
-                $estadoMesa = 'Ocupada';
-            }
-        } else {
-            // Si no hay reserva, la mesa está libre
-            $estadoMesa = 'Libre';
-        }
-
-        echo "
-        <tr class='" . ($fila_id_mesa % 2 == 0 ? 'fila-par' : 'fila-impar') . "'>
-            <td>" . $fila_id_mesa . "</td>   
-            <td>" . $fila_tipo_sala . "</td>
-            <td>" . $fila_nombre_sala . "</td>
-            <td>" . $fila_nombre_mesa . "</td>
-            <td>" . $fila_sillas_mesa . "</td>
-            <td><button onclick='editarSillas(" . $fila_id_mesa . ", " . $fila_sillas_mesa . ")'>Editar</button></td>";
-
-        // Mostrar el estado de la mesa
-        if ($estadoMesa == "Libre") {
-            echo "<td id='mesa_libre'><a href='#' onclick='confirmarAccion(\"Reservar\", " . $fila_id_mesa . ")'>Ocupar</a></td>";
-        } else if ($estadoMesa == "Ocupada") {
-            echo "<td id='mesa_ocupada'><a href='#' onclick='confirmarAccion(\"Finalizar ocupacion\", " . $fila_id_mesa . ")'>Finalizar ocupacion </a></td>";
-        } else if ($estadoMesa == "Reservada") {
-            echo "<td id='mesa_Reservada'><a href='#' onclick='confirmarAccion(\"Mesa Reservada\", " . $fila_id_mesa . ")'>Mesa Reservada</a></td>";
-        }
-
-        echo "</tr>";
-    }
-} else {
-    echo "<tr>
-    <td>No hay mesas disponibles</td>
-    </tr>";
-}
-?>
-
-<script>
-    function editarSillas(mesaId, sillasActuales) {
-        var nuevaCantidad = prompt("Editar cantidad de sillas", sillasActuales);
-        if (nuevaCantidad !== null && nuevaCantidad !== "") {
-            window.location.href = 'editar_sillas.php?mesaId=' + mesaId + '&nuevaCantidad=' + nuevaCantidad;
-        }
-    }
-
-    function confirmarAccion(accion, mesaId) {
-        // Muestra un cuadro de diálogo de confirmación con tres opciones
-        Swal.mixin({
-            input: 'select',
-            inputOptions: {
-                'Ahora': 'Ahora',
-                'Futura Reserva': 'Futura Reserva'
-            },
-            confirmButtonText: 'Siguiente',
-            showCancelButton: true,
-            cancelButtonText: 'Cancelar'
-        }).queue([
-            {
-                title: '¿Estás seguro?',
-                text: '¿Quieres ' + accion + '?',
-                icon: 'warning',
-            },
-        ]).then((result) => {
-            // Si el usuario confirma, realiza la acción correspondiente
-            if (result.value) {
-                var selectedOption = result.value[0];
-                if (selectedOption === 'Futura Reserva') {
-                    window.location.href = 'formreservafutura.php?mesa=' + mesaId ;
-                } else if (selectedOption === 'Ahora') {
-                    window.location.href = './proc/reservar.php?mesa=' + mesaId + '&estado=' + (accion === 'Reservar' ? 'Ocupada' : 'Libre');
-                }
-            }
-        });
-    }
-</script>
+                    echo "
+                        <tr class='" . ($fila_id_mesa % 2 == 0 ? 'fila-par' : 'fila-impar') . "'>
+                            <td>" . $fila_tipo_sala . "</td>
+                            <td>" . $fila_nombre_sala . "</td>
+                            <td>" . $fila_nombre_mesa . "</td>
+                            <td>" . $fila_sillas_mesa . "</td>
+                    ";
                         
+                    if ($fila_estado_mesa == "Libre") {
+                        echo "<td id='mesa_libre'><a href='#' onclick='confirmarAccion(\"Reservar\", " . $fila_id_mesa . ")'>Reservar</a></td>";
+                        echo "<td id='mesa_libre'><a href='#' onclick='programarReserva(\"ProgramarReserva\", " . $fila_id_mesa . ")'>Programar Reserva</a></td>";
+                    } else {
+                        echo "<td id='mesa_ocupada'><a href='#' onclick='confirmarAccion(\"Cancelar Reserva\", " . $fila_id_mesa . ")'>Cancelar Reserva</a></td>";
+                        echo "<td id='mesa_ocupada'></a></td>";
+                    }
+                    
+                    echo"</tr>";
+                }
+            } else {
+                echo "<tr>
+                <td>No hay mesas disponibles</td>
+            </tr>";
+            }
+            ?>
+<script>
+function programarReserva(accion, mesaId) {
+    Swal.fire({
+        title: '¿Quieres ' + accion + '?',
+        text: 'Selecciona la fecha y hora de la reserva',
+        icon: 'warning',
+        html: `
+            <form id="programarReservaForm">
+                <label for="fechaReserva">Fecha:</label>
+                <input type="date" id="fechaReserva" required>
+
+                <label for="horaReserva">Hora:</label>
+                <select id="horaReserva" required>
+                    <option value="13:00 - 14:30">13:00 - 14:30</option>
+                    <option value="14:30 - 15:00">14:30 - 15:00</option>
+                    <option value="15:00 - 16:30">15:00 - 16:30</option>
+                    <option value="20:00 - 21:30">20:00 - 21:30</option>
+                    <option value="21:30 - 23:00">21:30 - 23:00</option>
+                </select>
+            </form>
+        `,
+        showCancelButton: true,
+        confirmButtonText: 'Reservar',
+        cancelButtonText: 'Cancelar',
+        preConfirm: () => {
+            const fechaReserva = document.getElementById('fechaReserva').value;
+            const horaReserva = document.getElementById('horaReserva').value;
+
+            // Puedes agregar aquí la lógica para enviar los datos a tu backend
+            window.location.href = `./proc/programarreserva.php?mesa=${mesaId}&fecha=${encodeURIComponent(fechaReserva)}&hora=${encodeURIComponent(horaReserva)}`;
+        }
+    });
+}
+
+
+function confirmarAccion(accion, mesaId) {
+    // Muestra un cuadro de diálogo de confirmación
+    Swal.fire({
+        title: '¿Estás seguro?',
+        text: '¿Quieres ' + accion + '?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Reservar',
+        cancelButtonText: 'Cancelar'
+    }).then((result) => {
+        // Si el usuario confirma, redirecciona a la siguiente página
+        if (result.isConfirmed) {
+            window.location.href = './proc/reservar.php?mesa=' + mesaId + '&estado=' + (accion === 'Reservar' ? 'Ocupada' : 'Libre');
+        }
+    });
+}
+</script>
+
+
 
             </tbody>
         </table>
+
     </div>
 </body>
 </html>
