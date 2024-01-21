@@ -54,29 +54,42 @@ if ($result->num_rows > 0) {
              <tr>
                  <th>Username</th>
                  <th>Tipo Usuario</th>
+                 <th>Contraseña</th>
+                 <th>Imagen</th>
                  <th>Acciones</th>
              </tr>";
 
-    while ($row = $result->fetch_assoc()) {
-        echo "<tr>
-                 <td>{$row['username_usuario']}</td>
-                 <td>{$row['tipo_usuario']}</td>
-                 <td>
-                     <a href='modificar_usuario.php?id={$row['id_usuario']}'>Modificar</a>
-                     <form action='eliminar_usuario.php' method='post'>
-                         <input type='hidden' name='id' value='{$row['id_usuario']}'>
-                         <button type='submit'>Eliminar</button>
-                     </form>
-                 </td>
-             </tr>";
-    }
+             while ($row = $result->fetch_assoc()) {
+                echo "<tr>
+                         <td>{$row['username_usuario']}</td>
+                         <td>{$row['tipo_usuario']}</td>
+                         <td>{$row['pwd_usuario']}</td>
+                         <td>{$row['imagen_usuario']}</td>
+                         <td>
+                             <a href='#' data-accion='editar'
+                                data-id='{$row['id_usuario']}'
+                                data-username='{$row['username_usuario']}'
+                                data-nombre='{$row['nombre_usuario']}'
+                                data-apellidos='{$row['apellidos_usuario']}'
+                                data-tipo-usuario='{$row['tipo_usuario']}'
+                                data-password='{$row['pwd_usuario']}'  
+                                data-imagen='{$row['imagen_usuario']}'>Modificar</a>
+                         
+                             <form action='eliminar_usuario.php' method='post'>
+                                 <input type='hidden' name='id' value='{$row['id_usuario']}'>
+                                 <button type='submit'>Eliminar</button>
+                             </form>
+                         </td>
+                     </tr>";
+            }
+            
+            
+            
+            
 
     echo "</table>";
 } else {
     echo "No hay usuarios.";
 }
 
-
-// Cerrar la conexión a la base de datos
-$conn->close();
 ?>

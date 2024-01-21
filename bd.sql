@@ -20,11 +20,12 @@ CREATE TABLE `tbl_salas` (
 
 CREATE TABLE `tbl_mesas` (
   `id_mesa` INT NOT NULL AUTO_INCREMENT,
-  `nombre_mesa` VARCHAR(4) NOT NULL,
+  `nombre_mesa` VARCHAR(25) NOT NULL,
   `estado_mesa` ENUM ("Libre","Ocupada") NOT NULL,
-  `sillas_mesa` ENUM ("2","4","6","8","12") NOT NULL,
+  `sillas_mesa` ENUM ("1","2","3","4","5","6","7","8","9","10","11","12") NOT NULL,
   `id_sala_mesa` INT NOT NULL,
-  PRIMARY KEY (`id_mesa`)
+  PRIMARY KEY (`id_mesa`),
+  FOREIGN KEY (`id_sala_mesa`) REFERENCES `tbl_salas` (`id_sala`)
 );
 
 CREATE TABLE `tbl_reservas` (
@@ -33,10 +34,11 @@ CREATE TABLE `tbl_reservas` (
   `hora_final_reserva` DATETIME NULL,
   `id_camarero_reserva` INT NOT NULL,
   `id_mesa_reserva` INT NOT NULL,
-  PRIMARY KEY (`id_reserva`)
+  PRIMARY KEY (`id_reserva`),
+  FOREIGN KEY (`id_camarero_reserva`) REFERENCES `tbl_camareros` (`id_camarero`),
+  FOREIGN KEY (`id_mesa_reserva`) REFERENCES `tbl_mesas` (`id_mesa`)
 );
 
--- Añadir la nueva tabla de usuarios
 CREATE TABLE `tbl_usuarios` (
   `id_usuario` INT NOT NULL AUTO_INCREMENT,
   `username_usuario` VARCHAR(20) NOT NULL,
@@ -47,25 +49,6 @@ CREATE TABLE `tbl_usuarios` (
   `tipo_usuario` ENUM ("Administracion", "Mantenimiento", "Camarero") NOT NULL,
   PRIMARY KEY (`id_usuario`)
 );
-
--- Conectar la tabla de usuarios con la tabla de camareros
-ALTER TABLE `tbl_usuarios` ADD CONSTRAINT `usuarios_camareros_fk`
-FOREIGN KEY (`id_usuario`)
-REFERENCES `tbl_camareros` (`id_camarero`);
-
-
-
-ALTER TABLE `tbl_mesas` ADD CONSTRAINT `mesas_salas_fk`
-FOREIGN KEY (`id_sala_mesa`)
-REFERENCES `tbl_salas` (`id_sala`);
-
-ALTER TABLE `tbl_reservas` ADD CONSTRAINT `reservas_camareros_fk`
-FOREIGN KEY (`id_camarero_reserva`)
-REFERENCES `tbl_camareros` (`id_camarero`);
-
-ALTER TABLE `tbl_reservas` ADD CONSTRAINT `reservas_mesas_fk`
-FOREIGN KEY (`id_mesa_reserva`)
-REFERENCES `tbl_mesas` (`id_mesa`);
 
 
 
