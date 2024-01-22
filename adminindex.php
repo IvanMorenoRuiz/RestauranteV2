@@ -9,100 +9,8 @@
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <!-- Incluir jQuery -->
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-
-<style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #ffe799;
-        }
-
-        header {
-            background-color: #333;
-            color: white;
-            text-align: center;
-            padding: 1em;
-        }
-
-        .container {
-            max-width: 1500px;
-            margin: 0 auto;
-            padding: 20px;
-            display: flex;
-            flex-wrap: wrap;
-        }
-
-        .box {
-            background-color: #fff;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            padding: 20px;
-            margin: 10px;
-            flex-grow: 1;
-            box-sizing: border-box;
-        }
-        h1 {
-    text-align: center;
-}
-
-        h2 {
-            color: #333;
-        }
-
-        form {
-            max-width: 400px;
-            margin: 0 auto;
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-        }
-
-        label {
-            width: 45%;
-            box-sizing: border-box;
-            margin-bottom: 10px;
-        }
-
-        input {
-            width: 100%;
-            padding: 8px;
-            box-sizing: border-box;
-            margin-bottom: 10px;
-        }
-
-        button {
-            background-color: #4CAF50;
-            color: white;
-            padding: 10px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-
-        button:hover {
-            background-color: #45a049;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-
-        table, th, td {
-            border: 1px solid #ddd;
-        }
-
-        th, td {
-            padding: 10px;
-            text-align: left;
-        }
-
-        th {
-            background-color: #ffe799;
-        }
-    </style>
+<link rel="stylesheet" type="text/css" href="./css/adminindex.css">
+<script src="validaciones.js" defer></script>
 </head>
 <body>
 <div class="container">
@@ -110,8 +18,10 @@
  <div class="box">
     <!-- Formulario de inserción de usuarios -->
     <h1>ADMINISTRADOR DE OASIS23</h1>
+    <button id="btnEstadisticas">Estadísticas</button>
+
     <h2>Añadir Usuario</h2>
-    <form action="backend.php" method="post">
+    <form name="myForm" action="backend.php" method="post" onsubmit="return validarFormulario()">
         <!-- Campos del formulario -->
         <label>Username:</label>
         <input type="text" name="username" required>
@@ -154,6 +64,35 @@
 
 
 
+    <script>
+    $(document).ready(function() {
+        $("#btnEstadisticas").click(function() {
+            // Realizar la petición AJAX para obtener las estadísticas
+            $.ajax({
+                url: 'obtener_estadisticas.php', // Ruta del archivo PHP que procesará la solicitud
+                type: 'GET',
+                success: function(data) {
+                    // Mostrar las estadísticas en un Sweet Alert
+                    Swal.fire({
+                        title: 'Estadísticas de Reservas',
+                        html: data,
+                        icon: 'info',
+                        confirmButtonText: 'Cerrar'
+                    });
+                },
+                error: function() {
+                    // Manejar errores si la petición AJAX falla
+                    Swal.fire({
+                        title: 'Error',
+                        text: 'Error al obtener estadísticas',
+                        icon: 'error',
+                        confirmButtonText: 'Cerrar'
+                    });
+                }
+            });
+        });
+    });
+</script>
 
 <!-- Script para mostrar SweetAlert -->
 <script>
@@ -189,6 +128,31 @@ if (isset($_GET['success']) && $_GET['success'] == 'true') {
     ?>
 </script>
 <script>
+function validarFormularioEdicion() {
+    // Validar nombre
+    var nombre = document.forms["formulario-edicion"]["nombre"].value;
+    if (!/^[a-zA-Z]+$/.test(nombre)) {
+        Swal.showValidationMessage("El nombre solo debe contener letras.");
+        return false;
+    }
+
+    // Validar apellidos
+    var apellidos = document.forms["formulario-edicion"]["apellidos"].value;
+    if (!/^[a-zA-Z ]+$/.test(apellidos)) {
+        Swal.showValidationMessage("Los apellidos solo deben contener letras y espacios.");
+        return false;
+    }
+
+    // Validar contraseña
+    var contraseña = document.forms["formulario-edicion"]["password"].value;
+    if (contraseña.length < 5) {
+        Swal.showValidationMessage("La contraseña debe tener al menos 5 caracteres.");
+        return false;
+    }
+
+    return true;
+}
+
 function mostrarFormularioEdicion(id, username, nombre, apellidos, tipoUsuario, pwdUsuario, imagenUsuario) {
     Swal.fire({
         title: 'Editar Usuario',
@@ -220,16 +184,17 @@ function mostrarFormularioEdicion(id, username, nombre, apellidos, tipoUsuario, 
             </form>
         `,
         showCancelButton: true,
-        showCloseButton: true, 
+        showCloseButton: true,
         cancelButtonText: 'Cancelar',
         confirmButtonText: 'Guardar Cambios',
         preConfirm: () => {
-            document.getElementById('formulario-edicion').submit();
+            // Llama a la función para validar el formulario antes de enviar
+            if (validarFormularioEdicion()) {
+                document.getElementById('formulario-edicion').submit();
+            }
         }
     });
 }
-
-
 
 $(document).off('click', 'a[data-accion="editar"]').on('click', 'a[data-accion="editar"]', function() {
     var idUsuario = $(this).data('id');
@@ -246,6 +211,7 @@ $(document).off('click', 'a[data-accion="editar"]').on('click', 'a[data-accion="
     // Llama a la función para mostrar el formulario de edición
     mostrarFormularioEdicion(idUsuario, username, nombre, apellidos, tipoUsuario, password, imagen);
 });
+
 
 </script>
 

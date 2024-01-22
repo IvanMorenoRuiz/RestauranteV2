@@ -23,11 +23,11 @@ if (isset($_POST['agregarMesa'])) {
     $nombreMesa = $_POST['nombreMesa'];
     $sillasMesa = $_POST['sillasMesa'];
 
-    // Obtener id de sala desde el formulario
-    $idTipoSala = $_POST['idTipoSala'];
+    // Obtener nombre de sala desde el formulario
+    $nombreSala = $_POST['nombreSala'];
 
-    // Consultar la base de datos para obtener el id de la sala correspondiente al tipo seleccionado
-    $sqlIdSala = "SELECT id_sala FROM tbl_salas WHERE tipo_sala = '$idTipoSala' LIMIT 1";
+    // Consultar la base de datos para obtener el id de la sala correspondiente al nombre seleccionado
+    $sqlIdSala = "SELECT id_sala FROM tbl_salas WHERE nombre_sala = '$nombreSala' LIMIT 1";
     $resultIdSala = $conn->query($sqlIdSala);
 
     if ($resultIdSala->num_rows > 0) {
@@ -49,7 +49,7 @@ if (isset($_POST['agregarMesa'])) {
         }
     } else {
         // Redirigir con mensajes de error si no se encuentra la sala
-        header("Location: adminindex.php?error=true&mensajeError=Tipo de sala no válido");
+        header("Location: adminindex.php?error=true&mensajeError=Nombre de sala no válido");
         exit();
     }
 }
@@ -63,12 +63,12 @@ echo "<form action='crud_mesas.php' method='post'>";
 echo "<label>Nombre de Mesa:</label>";
 echo "<input type='text' name='nombreMesa' required>";
 echo "<br>";
-echo "<label>Tipo de Sala:</label>";
-echo "<select name='idTipoSala' required>";
+echo "<label>Nombre de Sala:</label>";
+echo "<select name='nombreSala' required>";
 
 // Construir opciones del menú desplegable con resultados de la consulta
 while ($rowSala = $resultSalas->fetch_assoc()) {
-    echo "<option value='{$rowSala['id_sala']}'>{$rowSala['nombre_sala']}</option>";
+    echo "<option value='{$rowSala['nombre_sala']}'>{$rowSala['nombre_sala']}</option>";
 }
 
 echo "</select>";
