@@ -9,6 +9,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['idMesa'])) {
     $sillasMesa = $_POST['sillasMesa'];
     $idTipoSala = $_POST['idTipoSala'];
 
+    // Validar que no exista otra mesa con el mismo nombre
+    $sqlValidarNombre = "SELECT id_mesa FROM tbl_mesas WHERE nombre_mesa = '$nombreMesa' AND id_mesa != '$idMesa' LIMIT 1";
+    $resultValidarNombre = $conn->query($sqlValidarNombre);
+
+    if ($resultValidarNombre->num_rows > 0) {
+        // Ya existe otra mesa con el mismo nombre, mostrar mensaje de error
+        header("Location: adminindex.php?error=true&mensajeError=Ya existe otra mesa con el mismo nombre");
+        exit();
+    }
+
     // Validar que el tipo de sala exista antes de actualizar
     $sqlValidarSala = "SELECT id_sala FROM tbl_salas WHERE id_sala = '$idTipoSala' LIMIT 1";
     $resultValidarSala = $conn->query($sqlValidarSala);

@@ -141,41 +141,52 @@ if ($resultMesas->num_rows > 0) {
 
 <!-- Script para mostrar SweetAlert -->
 <script>
-    function mostrarFormularioEdicionMesa(idMesa, nombreMesa, sillasMesa, idTipoSala) {
-        // Realizar una petición AJAX para obtener la lista de salas
-        fetch('obtener_salas.php')
-            .then(response => response.json())
-            .then(data => {
-                // Crear opciones del menú desplegable
-                const opcionesSala = data.map(sala => `<option value="${sala.id_sala}" ${(idTipoSala === sala.id_sala) ? 'selected' : ''}>${sala.nombre_sala}</option>`).join('');
+function mostrarFormularioEdicionMesa(idMesa, nombreMesa, sillasMesa, idTipoSala) {
+    // Realizar una petición AJAX para obtener la lista de salas
+    fetch('obtener_salas.php')
+        .then(response => response.json())
+        .then(data => {
+            // Crear opciones del menú desplegable
+            const opcionesSala = data.map(sala => `<option value="${sala.id_sala}" ${(idTipoSala === sala.id_sala) ? 'selected' : ''}>${sala.nombre_sala}</option>`).join('');
 
-                // Mostrar el formulario de edición con las opciones de sala
-                Swal.fire({
-                    title: 'Editar Mesa',
-                    html: `
-                        <form id="formulario-edicion" action="actualizar_mesa.php" method="post">
-                            <input type="hidden" name="idMesa" value="${idMesa}">
-                            <label>Nombre de Mesa:</label>
-                            <input type="text" name="nombreMesa" value="${nombreMesa}" required>
-                            <br>
-                            <label>Sillas de Mesa:</label>
-                            <input type="text" name="sillasMesa" value="${sillasMesa}" required>
-                            <br>
-                            <label>Tipo de Sala:</label>
-                            <select name="idTipoSala" required>
-                                ${opcionesSala}
-                            </select>
-                            <br>
-                        </form>
-                    `,
-                    showCancelButton: true,
-                    showCloseButton: true,
-                    cancelButtonText: 'Cancelar',
-                    confirmButtonText: 'Guardar Cambios',
-                    preConfirm: () => {
-                        document.getElementById('formulario-edicion').submit();
+            // Mostrar el formulario de edición con las opciones de sala
+            Swal.fire({
+                title: 'Editar Mesa',
+                html: `
+                    <form id="formulario-edicion" action="actualizar_mesa.php" method="post">
+                        <input type="hidden" name="idMesa" value="${idMesa}">
+                        <label>Nombre de Mesa:</label>
+                        <input type="text" name="nombreMesa" value="${nombreMesa}" required>
+                        <br>
+                        <label>Sillas de Mesa:</label>
+                        <input type="number" name="sillasMesa" value="${sillasMesa}" required min="1" max="15">
+                        <br>
+                        <label>Tipo de Sala:</label>
+                        <select name="idTipoSala" required>
+                            ${opcionesSala}
+                        </select>
+                        <br>
+                    </form>
+                `,
+                showCancelButton: true,
+                showCloseButton: true,
+                cancelButtonText: 'Cancelar',
+                confirmButtonText: 'Guardar Cambios',
+                preConfirm: () => {
+                    // Validar la cantidad de sillas
+                    const sillasInput = document.querySelector('input[name="sillasMesa"]');
+                    const sillasValue = parseInt(sillasInput.value, 10);
+
+                    if (isNaN(sillasValue) || sillasValue < 1 || sillasValue > 15) {
+                        Swal.showValidationMessage('La cantidad de sillas debe ser un número entre 1 y 15');
+                        return false;
                     }
-                });
+
+                    // Enviar el formulario si la validación es exitosa
+                    document.getElementById('formulario-edicion').submit();
+                }
             });
-    }
+        });
+}
+
 </script>

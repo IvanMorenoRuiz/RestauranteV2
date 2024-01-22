@@ -19,7 +19,7 @@
     <!-- Formulario de inserción de usuarios -->
     <h1>ADMINISTRADOR DE OASIS23</h1>
     <button id="btnEstadisticas">Estadísticas</button>
-
+    <button id="btnCerrarSesion" onclick="cerrarSesion()">Cerrar Sesión</button>
     <h2>Añadir Usuario</h2>
     <form name="myForm" action="backend.php" method="post" onsubmit="return validarFormulario()">
         <!-- Campos del formulario -->
@@ -63,6 +63,12 @@
     </div>
 
 
+    <script>
+    function cerrarSesion() {
+        // Puedes agregar aquí la lógica para cerrar sesión, por ejemplo, redirigir a index.php
+        window.location.href = 'login.php';
+    }
+</script>
 
     <script>
     $(document).ready(function() {

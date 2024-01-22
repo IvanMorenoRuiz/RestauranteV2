@@ -1,0 +1,53 @@
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background-color: #ffe799;
+}
+
+.container {
+    max-width: 800px;
+    margin: 20px auto;
+    border: 1px solid #ccc;
+    padding: 20px;
+    border-radius: 10px;
+    background-color: #fff;
+}
+
+.mesa-deshabilitada {
+    background-color: #f2f2f2;
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 8px;
+}
+
+.mesa-deshabilitada p {
+    margin: 8px 0;
+}
+
+.editar-mesa, .habilitar-mesa, .borrar-mesa {
+    background-color: #4caf50;
+    color: #fff;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    border-radius: 5px;
+    margin: 5px;
+}
+
+.editar-mesa:hover, .habilitar-mesa:hover, .borrar-mesa:hover {
+    background-color: #45a049;
+}
+
+.cerrar-sesion {
+    background-color: #d9534f;
+    color: #fff;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-top: 10px;
+}
+
+.cerrar-sesion:hover {
+    background-color: #c9302c;
+}

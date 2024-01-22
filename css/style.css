@@ -1,3 +1,14 @@
+/* Agrega estas reglas al final de tu archivo style.css */
+.mesa-deshabilitada {
+    background-color: rgb(255, 255, 104); /* Color de fondo amarillo para mesas deshabilitadas */
+}
+
+.mesa-deshabilitada a {
+    pointer-events: none; /* Deshabilita la interacción con los enlaces dentro de mesas deshabilitadas */
+    color: #999; /* Color de texto gris para enlaces deshabilitados */
+}
+
+
 :root {
     --pcolor:#b8812e;
     --scolor:#ffd343;

@@ -15,6 +15,7 @@
             </a>
         </div>
         <div class="enlaces">
+            <a href="./seleccionarsitio.php"><p>MODO VISUAL</p></a>
             <a href="./historial.php"><p>HISTORIAL</p></a>
             <a href="./perfil.php"><p>PERFIL</p></a>
             <a href="./estadisticas.php"><p>ESTADÍSTICAS</p></a>

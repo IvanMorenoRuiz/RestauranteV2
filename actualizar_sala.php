@@ -8,6 +8,16 @@ if (isset($_POST['idSala']) && isset($_POST['nombreSala']) && isset($_POST['tipo
     $nombreSala = $_POST['nombreSala'];
     $tipoSala = $_POST['tipoSala'];
 
+    // Verificar si ya existe una sala con el mismo nombre
+    $sqlVerificarNombre = "SELECT id_sala FROM tbl_salas WHERE nombre_sala = '$nombreSala' AND id_sala != $idSala";
+    $resultNombre = $conn->query($sqlVerificarNombre);
+
+    if ($resultNombre->num_rows > 0) {
+        // Ya existe una sala con el mismo nombre, mostrar mensaje de error
+        header("Location: adminindex.php?error=true&mensajeError=Ya existe una sala con el mismo nombre");
+        exit();
+    }
+
     // Actualizar los datos de la sala en la base de datos
     $sqlActualizarSala = "UPDATE tbl_salas SET nombre_sala='$nombreSala', tipo_sala='$tipoSala' WHERE id_sala=$idSala";
 

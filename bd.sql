@@ -21,9 +21,10 @@ CREATE TABLE `tbl_salas` (
 CREATE TABLE `tbl_mesas` (
   `id_mesa` INT NOT NULL AUTO_INCREMENT,
   `nombre_mesa` VARCHAR(25) NOT NULL,
-  `estado_mesa` ENUM ("Libre","Ocupada") NOT NULL,
+  `estado_mesa` ENUM ("Libre","Ocupada","Deshabilitada") NOT NULL DEFAULT 'Libre',
   `sillas_mesa` ENUM ("1","2","3","4","5","6","7","8","9","10","11","12") NOT NULL,
   `id_sala_mesa` INT NOT NULL,
+  `motivo_deshabilitacion` VARCHAR(255) NULL,
   PRIMARY KEY (`id_mesa`),
   FOREIGN KEY (`id_sala_mesa`) REFERENCES `tbl_salas` (`id_sala`)
 );
@@ -49,6 +50,7 @@ CREATE TABLE `tbl_usuarios` (
   `tipo_usuario` ENUM ("Administracion", "Mantenimiento", "Camarero") NOT NULL,
   PRIMARY KEY (`id_usuario`)
 );
+
 
 
 

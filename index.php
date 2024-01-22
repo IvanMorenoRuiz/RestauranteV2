@@ -248,62 +248,66 @@
                 </div>
             </div>
             <div class="filtro-salas filtro-medio">
-                <div class="filtro-visual">
-                <a
-                    href='seleccionarsitio.php'>Ver Mesas</a>
-                </div>
             </div>
         </div>
     </form>
 
     <div class="div-table">
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>Tipo Sala</th>
-                    <th>Nombre Sala</th>
-                    <th>Mesa</th>
-                    <th>Sillas</th>
-                    <th>Accion</th>
-                    <th>Accion</th>
-                </tr>
-            </thead>
-            <tbody>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Tipo Sala</th>
+                <th>Nombre Sala</th>
+                <th>Mesa</th>
+                <th>Sillas</th>
+                <th>Accion</th>
+                <th>Accion</th>
+                <th>Mantenimiento</th> <!-- Nuevo -->
+            </tr>
+        </thead>
+        <tbody>
 
-            <?php
-            if (!empty($sillas)) {
-                foreach ($sillas as $fila) {
-                    $fila_id_mesa = $fila["id_mesa"];
-                    $fila_tipo_sala = $fila["tipo_sala"];
-                    $fila_nombre_sala = $fila["nombre_sala"];
-                    $fila_nombre_mesa = $fila["nombre_mesa"];
-                    $fila_sillas_mesa = $fila["sillas_mesa"];
-                    $fila_estado_mesa = $fila["estado_mesa"];
+        <?php
+        if (!empty($sillas)) {
+            foreach ($sillas as $fila) {
+                $fila_id_mesa = $fila["id_mesa"];
+                $fila_tipo_sala = $fila["tipo_sala"];
+                $fila_nombre_sala = $fila["nombre_sala"];
+                $fila_nombre_mesa = $fila["nombre_mesa"];
+                $fila_sillas_mesa = $fila["sillas_mesa"];
+                $fila_estado_mesa = $fila["estado_mesa"];
 
-                    echo "
-                        <tr class='" . ($fila_id_mesa % 2 == 0 ? 'fila-par' : 'fila-impar') . "'>
-                            <td>" . $fila_tipo_sala . "</td>
-                            <td>" . $fila_nombre_sala . "</td>
-                            <td>" . $fila_nombre_mesa . "</td>
-                            <td>" . $fila_sillas_mesa . "</td>
-                    ";
-                        
-                    if ($fila_estado_mesa == "Libre") {
-                        echo "<td id='mesa_libre'><a href='#' onclick='confirmarAccion(\"Reservar\", " . $fila_id_mesa . ")'>Reservar</a></td>";
-                        echo "<td id='mesa_libre'><a href='#' onclick='programarReserva(\"ProgramarReserva\", " . $fila_id_mesa . ")'>Programar Reserva</a></td>";
-                    } else {
-                        echo "<td id='mesa_ocupada'><a href='#' onclick='confirmarAccion(\"Cancelar Reserva\", " . $fila_id_mesa . ")'>Cancelar Reserva</a></td>";
-                        echo "<td id='mesa_ocupada'></a></td>";
-                    }
-                    
-                    echo"</tr>";
+                echo "<tr class='" . ($fila_id_mesa % 2 == 0 ? 'fila-par' : 'fila-impar') . ($fila["estado_mesa"] == "Deshabilitada" ? ' mesa-deshabilitada' : '') . "'>";
+                echo "<td>" . $fila_tipo_sala . "</td>";
+                echo "<td>" . $fila_nombre_sala . "</td>";
+                echo "<td>" . $fila_nombre_mesa . "</td>";
+                echo "<td>" . $fila_sillas_mesa . "</td>";
+    
+                if ($fila["estado_mesa"] == "Libre") {
+                    echo "<td id='mesa_libre'><a href='#' onclick='confirmarAccion(\"Reservar\", " . $fila_id_mesa . ")'>Reservar</a></td>";
+                    echo "<td id='mesa_libre'><a href='#' onclick='programarReserva(\"ProgramarReserva\", " . $fila_id_mesa . ")'>Programar Reserva</a></td>";
+                } elseif ($fila["estado_mesa"] == "Ocupada") {
+                    echo "<td id='mesa_ocupada'><a href='#' onclick='confirmarAccion(\"Cancelar Reserva\", " . $fila_id_mesa . ")'>Cancelar Reserva</a></td>";
+                    echo "<td id='mesa_ocupada'></a></td>";
+                } else {
+                    echo "<td></td>"; // Mostrar "EN MANTENIMIENTO" para las mesas deshabilitadas
+                    echo "<td>EN MANTENIMIENTO</td>"; // Dejar el espacio en blanco para las mesas deshabilitadas
                 }
-            } else {
-                echo "<tr>
-                <td>No hay mesas disponibles</td>
-            </tr>";
+    
+                if ($fila["estado_mesa"] != "Deshabilitada") {
+                    echo "<td><a href='#' onclick='mostrarFormularioMantenimiento(" . $fila_id_mesa . ")'>Avisar</a></td>";
+                } else {
+                    echo "<td></td>"; // Dejar el espacio en blanco para las mesas deshabilitadas
+                }
+    
+                echo "</tr>";
             }
-            ?>
+        } else {
+            echo "<tr>
+            <td colspan='7'>No hay mesas disponibles</td>
+        </tr>";
+        }
+        ?>
 <script>
 function programarReserva(accion, mesaId) {
     Swal.fire({
@@ -332,11 +336,40 @@ function programarReserva(accion, mesaId) {
             const fechaReserva = document.getElementById('fechaReserva').value;
             const horaReserva = document.getElementById('horaReserva').value;
 
-            // Puedes agregar aquí la lógica para enviar los datos a tu backend
-            window.location.href = `./proc/programarreserva.php?mesa=${mesaId}&fecha=${encodeURIComponent(fechaReserva)}&hora=${encodeURIComponent(horaReserva)}`;
+            // Obtener la fecha actual en el formato YYYY-MM-DD
+            const fechaActual = new Date().toISOString().split('T')[0];
+
+            // Comparar la fecha seleccionada con la fecha actual
+            if (fechaReserva < fechaActual) {
+                Swal.showValidationMessage('La fecha de reserva no puede ser anterior a hoy');
+            } else {
+                // Puedes agregar aquí la lógica para enviar los datos a tu backend
+                window.location.href = `./proc/programarreserva.php?mesa=${mesaId}&fecha=${encodeURIComponent(fechaReserva)}&hora=${encodeURIComponent(horaReserva)}`;
+            }
         }
     });
 }
+
+function mostrarFormularioMantenimiento(idMesa) {
+    Swal.fire({
+        title: 'Mantenimiento de Mesa',
+        input: 'textarea',
+        inputLabel: 'Motivo de Deshabilitación',
+        inputPlaceholder: 'Ingrese el motivo aquí...',
+        showCancelButton: true,
+        confirmButtonText: 'Deshabilitar Mesa',
+        cancelButtonText: 'Cancelar',
+        preConfirm: (motivo) => {
+            // Puedes agregar aquí la lógica para enviar los datos a tu backend
+            if (motivo.trim() !== '') {
+                window.location.href = `./proc/proceso_mantenimiento.php?mesa=${idMesa}&motivo=${encodeURIComponent(motivo)}`;
+            } else {
+                Swal.showValidationMessage('El motivo no puede estar vacío');
+            }
+        }
+    });
+}
+
 
 
 function confirmarAccion(accion, mesaId) {
