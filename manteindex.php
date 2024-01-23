@@ -46,13 +46,13 @@
                         <input type="number" name="nuevas_sillas" id="nuevas_sillas" value="<?php echo $numSillas; ?>">
                         <button type="submit" onclick="mostrarAlerta('Mesa editada correctamente.');">Guardar</button>
                     </form>
-                    <form action="./proc/habilitar_mesas.php" method="post">
+                    <form action="./proc/habilitar_mesas.php" method="post" id="form-habilitar-mesa-<?php echo $mesaId; ?>">
                         <input type="hidden" name="mesa_id" value="<?php echo $mesaId; ?>">
-                        <button type="submit" name="habilitar_mesa" onclick="mostrarAlerta('Mesa habilitada correctamente.');">Habilitar Mesa</button>
+                        <button type="button" name="habilitar_mesa" onclick="habilitarMesa(<?php echo $mesaId; ?>);">Habilitar Mesa</button>
                     </form>
-                    <form action="./proc/borrar_mesa.php" method="post" onsubmit="return confirmarBorrar();">
+                    <form action="./proc/borrar_mesa.php" method="post" id="form-borrar-mesa">
                         <input type="hidden" name="mesa_id" value="<?php echo $mesaId; ?>">
-                        <button type="submit" name="borrar_mesa">Borrar Mesa</button>
+                        <button type="button" name="borrar_mesa" onclick="confirmarBorrar();">Borrar Mesa</button>
                     </form>
                 </div>
     <?php
@@ -71,29 +71,54 @@
     $conn->close();
     ?>
 
-    <script>
-        function mostrarAlerta(mensaje) {
-            Swal.fire({
-                title: 'Éxito',
-                text: mensaje,
-                icon: 'success'
-            });
-        }
+<script>
+    function mostrarAlerta(mensaje) {
+        Swal.fire({
+            title: 'Éxito',
+            text: mensaje,
+            icon: 'success',
+        });
+    }
 
-        function confirmarBorrar() {
-            return Swal.fire({
-                title: '¿Estás seguro?',
-                text: 'Esta acción no se puede deshacer.',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Sí, borrar'
-            }).then((result) => {
-                return result.isConfirmed;
-            });
-        }
-    </script>
+    function habilitarMesa(mesaId) {
+        Swal.fire({
+            title: '¿Quieres habilitar la mesa?',
+            text: '¿Has solucionado el problema de la mesa?',
+            icon: 'warning',
+            showConfirmButton: true,
+            confirmButtonText: 'Sí',
+            showCancelButton: true,
+            cancelButtonText: 'No'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Enviar el formulario manualmente
+                document.getElementById('form-habilitar-mesa-' + mesaId).submit();
+            }
+        });
+    }
+
+    function confirmarBorrar() {
+        Swal.fire({
+            title: '¿Estás seguro?',
+            text: '¿Quieres eliminar la mesa?.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Sí, borrar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Si se confirma, enviar el formulario
+                document.getElementById('form-borrar-mesa').submit();
+            }
+        });
+    }
+
+    // Refrescar la página cada 5 segundos
+    setTimeout(function() {
+        location.reload();
+    }, 5000);
+</script>
 </div>
 
 </body>

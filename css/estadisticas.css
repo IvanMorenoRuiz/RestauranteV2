@@ -1,6 +1,6 @@
 body {
     font-family: 'Arial', sans-serif;
-    background-image: url('../img/estadisticas.gif'); /* Imagen de fondo */
+    background-color: #ffe799;
     background-size: cover; /* Ajustar imagen al tamaño de la ventana */
     margin: 0;
     display: flex;

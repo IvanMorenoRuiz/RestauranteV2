@@ -51,6 +51,10 @@ a {
     text-decoration: none;
 }
 
+img.deshabilitada {
+    background-color: rgb(231, 231, 132); /* Fondo amarillo para mesas deshabilitadas */
+}
+
 img {
     position: center;
     width: 150px; /* Ajusta el tamaño según tus necesidades */

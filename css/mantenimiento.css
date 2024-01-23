@@ -24,30 +24,40 @@ body {
     margin: 8px 0;
 }
 
-.editar-mesa, .habilitar-mesa, .borrar-mesa {
+/* Estilos para los botones */
+button {
     background-color: #4caf50;
     color: #fff;
     border: none;
-    padding: 10px 15px;
+    padding: 5px 7px;
     cursor: pointer;
     border-radius: 5px;
-    margin: 5px;
+    margin: 0px;
 }
 
-.editar-mesa:hover, .habilitar-mesa:hover, .borrar-mesa:hover {
+button:hover {
     background-color: #45a049;
 }
 
-.cerrar-sesion {
+/* Estilos específicos para el botón de cerrar sesión */
+button[name="cerrar_sesion"] {
     background-color: #d9534f;
-    color: #fff;
-    border: none;
     padding: 10px 15px;
-    cursor: pointer;
-    border-radius: 5px;
-    margin-top: 10px;
+    margin-right: 670px; /* Mover el botón a la izquierda */
+    margin-left: 0; /* Asegurar que no hay margen a la izquierda */
 }
 
-.cerrar-sesion:hover {
+button[name="cerrar_sesion"]:hover {
     background-color: #c9302c;
+}
+
+/* Alineación del botón de cerrar sesión */
+form {
+    text-align: center; /* Alinear el resto de los botones al centro */
+    margin-bottom: 20px; /* Espacio entre el formulario y el contenido principal */
+}
+
+/* Estilos para el título de mantenimiento */
+h2 {
+    font-size: 54px; /* Ajusta el tamaño del título según sea necesario */
 }

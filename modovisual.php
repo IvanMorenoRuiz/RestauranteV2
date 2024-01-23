@@ -154,18 +154,13 @@ function programarReserva(mesaId, estadoMesa, tipoSala, reservarAhora) {
 
                 // Validar que la fecha seleccionada no sea anterior a la fecha actual
                 const fechaActual = new Date();
-                const fechaSeleccionada = new Date(fechaReserva);
-
-                if (fechaSeleccionada < fechaActual) {
-                    Swal.showValidationMessage('La fecha de reserva debe ser a partir de hoy.');
-                    return false;
-                }
 
                 // Puedes agregar aquí la lógica para enviar los datos a tu backend
                 if (fechaReserva !== '' && horaReserva !== '') {
                     window.location.href = `./proc/programarreserva.php?mesa=${mesaId}&fecha=${encodeURIComponent(fechaReserva)}&hora=${encodeURIComponent(horaReserva)}&tipo=${tipoSala}`;
                 } else {
                     Swal.showValidationMessage('Fecha y hora son obligatorias');
+                    return false;
                 }
             }
         });

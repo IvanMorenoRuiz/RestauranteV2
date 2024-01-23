@@ -30,8 +30,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["mesa_id"]) && isset($_
 }
 
 function redirigirConSweetAlert($mensaje, $exito) {
-    $url = "../manteindex.php?mensaje=" . urlencode($mensaje) . "&exito=" . ($exito ? 'true' : 'false');
-    header("Location: $url");
+    // Almacenar el mensaje y el éxito en variables de sesión
+    session_start();
+    $_SESSION['sweetAlertMensaje'] = $mensaje;
+    $_SESSION['sweetAlertExito'] = $exito;
+
+    // Esperar 2 segundos (puedes ajustar esto según sea necesario)
+    sleep(2);
+
+    // Redirigir a la página de destino
+    header("Location: ../manteindex.php");
     exit();
 }
+
 ?>

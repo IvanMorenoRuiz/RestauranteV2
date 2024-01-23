@@ -9,12 +9,13 @@
 body {
     background-color: black;
 }
+
 .body-BackGround {
-    background-image: url('../img/login.jpg'); /* Imagen de fondo */
-    background-size: cover; /* Ajusta el tamaño de la imagen para cubrir todo el fondo */
-    background-position: center; /* Centra la imagen */
-    background-repeat: no-repeat; /* Evita que la imagen se repita */
-    filter: blur(5px); /* Desenfoca la imagen */
+    background-image: url('../img/fondoindex.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    filter: blur(5px);
     width: 100vw;
     height: 100vh;
     position: absolute;
@@ -29,12 +30,17 @@ body {
     left: 50%;
     transform: translate(-50%, -50%);
     text-align: center;
-    color: white;
-    background: rgba(0, 0, 0, 0.55);
+    color: #ffe799;
+    background: rgba(0, 0, 0, 0.8); /* Más oscuro y menos translúcido */
     padding: 20px;
     border-radius: 10px;
     width: 500px;
     height: 400px;
+}
+
+.login h1 {
+    font-size: 48px; /* Tamaño del h1 más grande */
+    color: #ffe799; /* Color del h1 */
 }
 
 form {
@@ -48,7 +54,7 @@ form input {
 input {
     width: 100%;
     margin-bottom: 10px;
-    background: rgba(0, 0, 0, 0.5);
+    background: rgba(0, 0, 0, 0.7); /* Más oscuro y menos translúcido */
     border: none;
     outline: none;
     padding: 10px;
@@ -73,22 +79,17 @@ input::placeholder {
 }
 
 .btn-large {
-    padding: 9px 14px;
+    padding: 10px 14px; /* Reduzco el padding para que el botón sea más compacto */
     font-size: 15px;
     line-height: normal;
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
     border-radius: 5px;
+    background-color: #ffe799; /* Color de fondo verde */
+    color: black; /* Texto en blanco */
+    cursor: pointer; /* Cambia el cursor al pasar por encima */
 }
 
-.btn:hover {
-    color: #333333;
-    text-decoration: none;
-    background-color: #e6e6e6;
-    background-position: 0 -15px;
-    -webkit-transition: background-position 0.1s linear;
-    -moz-transition: background-position 0.1s linear;
-    -ms-transition: background-position 0.1s linear;
-    -o-transition: background-position 0.1s linear;
-    transition: background-position 0.1s linear;
+.btn-large:hover {
+    background-color: #c3b177;/* Cambia el color de fondo al pasar el ratón */
 }

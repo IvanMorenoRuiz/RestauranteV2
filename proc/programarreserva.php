@@ -32,11 +32,11 @@ if ($idCamarero !== null) {
 
     // Verificar si la fecha y hora actuales están dentro del rango de la reserva
     if ($fechaHoraActual >= $fechaHoraInicioReserva && $fechaHoraActual <= $fechaHoraFinalReserva) {
-        // La fecha y hora actuales están dentro del rango, cambiar el estado de la mesa a "Reservada"
-        $estadoMesa = "Reservada";
+        // La fecha y hora actuales están dentro del rango, cambiar el estado de la mesa a "Ocupada"
+        $estadoMesaOcupada = "Ocupada";
     } else {
         // La fecha y hora actuales no están dentro del rango, no cambiar el estado de la mesa
-        $estadoMesa = null;
+        $estadoMesaOcupada = null;
     }
 
     // Crear la consulta de inserción
@@ -51,13 +51,13 @@ if ($idCamarero !== null) {
         $stmt->execute();
 
         if ($stmt->affected_rows > 0) {
-            if ($estadoMesa !== null) {
-                // Actualizar el estado de la mesa solo si $estadoMesa no es null
+            // Actualizar el estado de la mesa solo si $estadoMesaOcupada no es null
+            if ($estadoMesaOcupada !== null) {
                 $sqlActualizarMesa = "UPDATE tbl_mesas SET estado_mesa = ? WHERE id_mesa = ?";
                 $stmtActualizarMesa = $conn->prepare($sqlActualizarMesa);
 
                 if ($stmtActualizarMesa) {
-                    $stmtActualizarMesa->bind_param("si", $estadoMesa, $mesaId);
+                    $stmtActualizarMesa->bind_param("si", $estadoMesaOcupada, $mesaId);
                     $stmtActualizarMesa->execute();
 
                     if ($stmtActualizarMesa->affected_rows > 0) {
@@ -65,12 +65,12 @@ if ($idCamarero !== null) {
                         header("Location: ../index.php?reserva=exito&mesa=$mesaId&fecha=$fechaReserva&hora=$horaReserva");
                         exit();
                     } else {
-                        echo "Error al actualizar el estado de la mesa.";
+                        echo "Error al actualizar el estado de la mesa: " . $stmtActualizarMesa->error;
                     }
 
                     $stmtActualizarMesa->close();
                 } else {
-                    echo "Error en la preparación de la consulta para actualizar la mesa.";
+                    echo "Error en la preparación de la consulta para actualizar la mesa: " . $conn->error;
                 }
             } else {
                 // Redirigir a index.php con información en la URL
@@ -78,12 +78,12 @@ if ($idCamarero !== null) {
                 exit();
             }
         } else {
-            echo "Error al realizar la reserva.";
+            echo "Error al realizar la reserva: " . $stmt->error;
         }
 
         $stmt->close();
     } else {
-        echo "Error en la preparación de la consulta";
+        echo "Error en la preparación de la consulta: " . $conn->error;
     }
 } else {
     echo "Error: El ID del camarero es NULL.";
